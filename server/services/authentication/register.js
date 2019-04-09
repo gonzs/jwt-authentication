@@ -1,22 +1,21 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const User = require('../../models/User');
+const User = require("../../models/User");
 
 const httpResponses = {
   onValidationError: {
     success: false,
-    message: 'Please enter email and password.'
+    message: "Please enter email and password."
   },
   onUserSaveError: {
     success: false,
-    message: 'That email address already exists.'
+    message: "That email address already exists."
   },
   onUserSaveSuccess: {
     success: true,
-    message: 'Successfully created new user.'
+    message: "Successfully created new user."
   }
-}
+};
 
 // Register new users
 function registerUser(request, response) {
