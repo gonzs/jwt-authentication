@@ -1,59 +1,106 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { loginUserAction } from '../actions/authenticationActions';
 import { setCookie } from '../utils/cookies';
+import {
+  Form,
+  Input,
+  Button,
+  Label,
+  Message,
+  Icon,
+  Header,
+} from 'semantic-ui-react';
 
 class LoginPage extends Component {
-  onHandleLogin = (event) => {
+  onHandleLogin = event => {
+    const { onLoginUser } = this.props;
+
     event.preventDefault();
 
     let email = event.target.email.value;
     let password = event.target.password.value;
 
     const data = {
-      email, password
+      email,
+      password,
     };
 
-    this.props.dispatch(loginUserAction(data));
-  }
+    onLoginUser(data);
+  };
 
   render() {
+    const { login } = this.props;
     let isSuccess, message;
 
-    if (this.props.response.login.hasOwnProperty('response')) {
-      isSuccess = this.props.response.login.response.success;
-      message = this.props.response.login.response.message;
-      
+    if (login.hasOwnProperty('response')) {
+      isSuccess = login.response.success;
+      message = login.response.message;
+
       if (isSuccess) {
-        setCookie('token', this.props.response.login.response.token, 1);
+        setCookie('token', login.response.token, 1);
       }
     }
 
     return (
-      <div>
-        <h3>Login Page</h3>
-        {!isSuccess ? <div>{message}</div> : <Redirect to='dashboard' />}
-        <form onSubmit={this.onHandleLogin}>
-          <div>
-            <label>Email</label>
-            <input type="email" name="email" />
-          </div>
-          <div>
-            <label>Password</label>
-            <input type="password" name="password" />
-          </div>
-          <div>
-            <button>Login</button>
-          </div>
-        </form>
-        Don't have account? <Link to='register'>Register here</Link>
-      </div>
+      <Fragment>
+        <Header as="h3" icon textAlign="center">
+          <Icon name="user circle outline" circular />
+          <Header.Content>Login Page</Header.Content>
+        </Header>
+
+        {!isSuccess ? (
+          isSuccess !== undefined ? (
+            <Message error compact>
+              {message}
+            </Message>
+          ) : (
+            <div />
+          )
+        ) : (
+          <Redirect to="dashboard" />
+        )}
+
+        <Form onSubmit={this.onHandleLogin} className="attached fluid segment">
+          <Form.Field>
+            <Label>Email</Label>
+            <Input type="email" name="email" />
+          </Form.Field>
+          <Form.Field>
+            <Label>Password</Label>
+            <Input type="password" name="password" />
+          </Form.Field>
+          <Form.Field>
+            <Button type="submit" color="blue">
+              Login
+            </Button>
+          </Form.Field>
+        </Form>
+        <Message attached="bottom" warning>
+          <Icon name="help" />
+          Don't have account? <Link to="register">Register here</Link>
+        </Message>
+      </Fragment>
     );
   }
 }
 
-const mapStateToProps = (response) => ({response});
+const mapStateToProps = response => {
+  return {
+    login: response.login,
+  };
+};
 
-export default connect(mapStateToProps)(LoginPage);
+const mapDispatchToProps = dispatch => {
+  return {
+    onLoginUser: data => {
+      dispatch(loginUserAction(data));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginPage);

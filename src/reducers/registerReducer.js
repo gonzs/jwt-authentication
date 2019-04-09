@@ -1,9 +1,9 @@
 import * as types from '../actions';
 
-export default function(state = [], action) {
+export default function(state = [{ register: '' }], action) {
   let response = action.response;
 
-  switch(action.type) {
+  switch (action.type) {
     case types.REGISTER_USER_SUCCESS:
       return { ...state, response };
     case types.REGISTER_USER_ERROR:

@@ -1,11 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { registerUserAction } from '../actions/authenticationActions';
+import {
+  Form,
+  Input,
+  Label,
+  Button,
+  Message,
+  Icon,
+  Header,
+} from 'semantic-ui-react';
 
 class RegisterPage extends Component {
-  onHandleRegistration = (event) => {
+  onHandleRegistration = event => {
+    const { onRegisterUser } = this.props;
+
     event.preventDefault();
 
     let name = event.target.name.value;
@@ -13,49 +23,86 @@ class RegisterPage extends Component {
     let password = event.target.password.value;
 
     const data = {
-      name, email, password
+      name,
+      email,
+      password,
     };
 
-    this.props.dispatch(registerUserAction(data));
-  }
+    onRegisterUser(data);
+  };
 
   render() {
+    const { register } = this.props;
     let message, isSuccess;
 
-    if (this.props.response.register.hasOwnProperty('response')) {
-      isSuccess = this.props.response.register.response.success;
-      message = this.props.response.register.response.message;
+    if (register.hasOwnProperty('response')) {
+      isSuccess = register.response.success;
+      message = register.response.message;
     }
-    
+
     return (
-      <div>
-        <h3>RegisterPage</h3>
-        {!isSuccess ? <div>{message}</div> : <Redirect to='login' />}
-        <form onSubmit={this.onHandleRegistration}>
-          <div>
-            <label>Name</label>
-            <input type="text" name="name" />
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="email" name="email" />
-          </div>
-          <div>
-            <label>Password</label>
-            <input type="password" name="password" />
-          </div>
-          <div>
-            <button>Register</button>
-          </div>
-        </form>
-        Already have account? <Link to='login'>Login here</Link>
-      </div>
-    )
+      <Fragment>
+        <Header as="h3" icon textAlign="center">
+          <Icon name="user circle outline" circular />
+          <Header.Content>Register Page</Header.Content>
+        </Header>
+
+        {!isSuccess ? (
+          isSuccess !== undefined ? (
+            <Message error compact>
+              {message}
+            </Message>
+          ) : (
+            <div />
+          )
+        ) : (
+          <Redirect to="login" />
+        )}
+
+        <Form
+          onSubmit={this.onHandleRegistration}
+          className="attached fluid segment"
+        >
+          <Form.Field>
+            <Label>Name</Label>
+            <Input type="text" name="name" />
+          </Form.Field>
+          <Form.Field>
+            <Label>Email</Label>
+            <Input type="email" name="email" />
+          </Form.Field>
+          <Form.Field>
+            <Label>Password</Label>
+            <Input type="password" name="password" />
+          </Form.Field>
+          <Form.Field>
+            <Button type="submit" color="blue">
+              Register
+            </Button>
+          </Form.Field>
+        </Form>
+        <Message attached="bottom" warning>
+          <Icon name="help" />
+          Already have account? <Link to="login">Login here</Link>
+        </Message>
+      </Fragment>
+    );
   }
 }
 
-const mapStateToProps = (response) => ({
-  response
-});
+const mapStateToProps = response => {
+  return {
+    register: response.register,
+  };
+};
 
-export default connect(mapStateToProps)(RegisterPage);
+const mapDispatchToProps = dispatch => {
+  return {
+    onRegisterUser: data => dispatch(registerUserAction(data)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RegisterPage);
