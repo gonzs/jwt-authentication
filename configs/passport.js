@@ -10,7 +10,7 @@ function setPassortConfigs(passport) {
   opts.secretOrKey = config.secret;
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
-      User.findOne({ id: jwt_payload.id }, (err, user) => {
+      User.findOne({ _id: jwt_payload._id }, (err, user) => {
         if (err) {
           return done(err, false);
         }

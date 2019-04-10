@@ -1,9 +1,14 @@
 "use strict";
 
-const User = require("../../models/User");
-
 function getDashboard(request, response) {
-  response.json("This is from dashboard");
+  setTimeout(
+    () =>
+      response.json({
+        success: true,
+        message: "This is from " + request.user.role + " dashboard"
+      }),
+    5000
+  );
 }
 
 module.exports = {
