@@ -1,7 +1,10 @@
 import * as types from '../actions';
 
-export default function(state = [{ register: '' }], action) {
-  let response = action.response;
+export default function(
+  state = { response: { success: undefined, message: undefined } },
+  action
+) {
+  const response = action.response;
 
   switch (action.type) {
     case types.REGISTER_USER_SUCCESS:

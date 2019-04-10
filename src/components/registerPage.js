@@ -36,8 +36,13 @@ class RegisterPage extends Component {
     let message, isSuccess;
 
     if (register.hasOwnProperty('response')) {
-      isSuccess = register.response.success;
-      message = register.response.message;
+      if (register.response !== undefined) {
+        isSuccess = register.response.success;
+        message = register.response.message;
+      } else {
+        isSuccess = false;
+        message = 'Connection error';
+      }
     }
 
     return (

@@ -35,11 +35,16 @@ class LoginPage extends Component {
     let isSuccess, message;
 
     if (login.hasOwnProperty('response')) {
-      isSuccess = login.response.success;
-      message = login.response.message;
+      if (login.response !== undefined) {
+        isSuccess = login.response.success;
+        message = login.response.message;
 
-      if (isSuccess) {
-        setCookie('token', login.response.token, 1);
+        if (isSuccess) {
+          setCookie('token', login.response.token, 1);
+        }
+      } else {
+        isSuccess = false;
+        message = 'Connection error';
       }
     }
 

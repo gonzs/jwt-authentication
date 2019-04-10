@@ -1,7 +1,7 @@
 import * as types from '../actions';
 
 export default function(
-  state = [{ login: { response: { success: '', message: '' } } }],
+  state = { response: { success: undefined, message: undefined } },
   action
 ) {
   const response = action.response;
