@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
   email: {
@@ -14,15 +14,18 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['Client', 'Manager', 'Admin'],
-    default: 'Client'
+    enum: ["Client", "Manager", "Admin"],
+    default: "Client"
+  },
+  name: {
+    type: String
   }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre("save", function(next) {
   let user = this;
 
-  if (this.isModified('password') || this.isNew) {
+  if (this.isModified("password") || this.isNew) {
     bcrypt.genSalt(10, (err, salt) => {
       if (err) {
         console.log(err);
@@ -44,15 +47,39 @@ UserSchema.pre('save', function(next) {
   }
 });
 
+UserSchema.pre("findOneAndUpdate", function(next) {
+  let { password } = this._update;
+
+  if (password !== undefined) {
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) {
+        console.log(err);
+        return next(err);
+      }
+
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) {
+          console.log(err);
+          return next(err);
+        }
+
+        password = hash;
+        this._update.password = password;
+        next();
+      });
+    });
+  } else {
+    return next();
+  }
+});
+
 // Create method to compare password input to password saved in database
 UserSchema.methods.comparePassword = function(pw, cb) {
-  bcrypt.compare(pw, this.password, function(err, isMatch) {
-    if (err) {
-      return cb(err);
-    }
+  bcrypt.compare(pw, this.password, (err, isMatch) => {
+    if (err) return cb(err);
 
     cb(null, isMatch);
   });
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model("User", UserSchema);

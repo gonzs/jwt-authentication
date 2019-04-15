@@ -3,17 +3,8 @@
 const jwt = require("jsonwebtoken");
 const db = require("../../../configs/db");
 const User = require("../../models/User");
-
-const httpResponse = {
-  onUserNotFound: {
-    success: false,
-    message: "User not found."
-  },
-  onAuthenticationFail: {
-    success: false,
-    message: "Passwords did not match."
-  }
-};
+const cons = require("../cons");
+const httpResponse = cons.httpResponse;
 
 function loginUser(request, response) {
   let { email, password } = request.body;
@@ -22,7 +13,7 @@ function loginUser(request, response) {
     {
       email: email
     },
-    function(error, user) {
+    (error, user) => {
       if (error) throw error;
 
       if (!user) {
@@ -30,7 +21,7 @@ function loginUser(request, response) {
       }
 
       // Check if password matches
-      user.comparePassword(password, function(error, isMatch) {
+      user.comparePassword(password, (error, isMatch) => {
         if (isMatch && !error) {
           let u = {
             _id: user._id,
