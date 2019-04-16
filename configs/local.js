@@ -2,7 +2,7 @@
 
 let localConfig = {
   hostname: "localhost",
-  port: 3000,
+  port: 5000,
   viewDir: "./app/views"
 };
 

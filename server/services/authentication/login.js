@@ -3,7 +3,7 @@
 const jwt = require("jsonwebtoken");
 const db = require("../../../configs/db");
 const User = require("../../models/User");
-const cons = require("../cons");
+const cons = require("../../../configs/constants");
 const httpResponse = cons.httpResponse;
 
 function loginUser(request, response) {

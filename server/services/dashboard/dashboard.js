@@ -7,7 +7,7 @@ function getDashboard(request, response) {
         success: true,
         message: "This is from " + request.user.role + " dashboard"
       }),
-    5000
+    3000
   );
 }
 

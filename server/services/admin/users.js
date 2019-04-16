@@ -2,7 +2,7 @@
 
 const User = require("../../models/User");
 const { ObjectId } = require("mongodb");
-const cons = require("../cons");
+const cons = require("../../../configs/constants");
 const httpResponse = cons.httpResponse;
 const passwordPattern = cons.passwordPattern;
 
