@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loginUserAction } from '../actions/authenticationActions';
@@ -11,85 +11,112 @@ import {
   Message,
   Icon,
   Header,
+  Loader,
 } from 'semantic-ui-react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-class LoginPage extends Component {
-  onHandleLogin = event => {
-    const { onLoginUser } = this.props;
+// Initial Values
+const initialValues = { email: '', password: '' };
 
-    event.preventDefault();
+// Validation Schema
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email')
+    .required('Mandatory Field'),
+  password: Yup.string()
+    .min(6, 'Too Short')
+    .max(12, 'Too Long')
+    .required('Mandatory Field'),
+});
 
-    let email = event.target.email.value;
-    let password = event.target.password.value;
-
-    const data = {
-      email,
-      password,
-    };
-
-    onLoginUser(data);
+const LoginPage = ({ onLoginUser, login }) => {
+  // onSubmit event
+  const onSubmit = (values, { setSubmitting }) => {
+    onLoginUser(values);
+    setTimeout(() => setSubmitting(false), 1000);
+    return;
   };
 
-  render() {
-    const { login } = this.props;
-    let isSuccess, message;
+  let isSuccess, message;
 
-    if (login.hasOwnProperty('response')) {
-      if (login.response !== undefined) {
-        isSuccess = login.response.success;
-        message = login.response.message;
+  if (login.hasOwnProperty('response')) {
+    if (login.response !== undefined) {
+      isSuccess = login.response.success;
+      message = login.response.message;
 
-        if (isSuccess) {
-          setCookie('token', login.response.token, 1);
-        }
-      } else {
-        isSuccess = false;
-        message = 'Connection error';
+      if (isSuccess) {
+        setCookie('token', login.response.token, 1);
       }
+    } else {
+      isSuccess = false;
+      message = 'Connection error';
     }
-
-    return (
-      <Fragment>
-        <Header as="h3" icon textAlign="center">
-          <Icon name="user circle outline" circular />
-          <Header.Content>Login Page</Header.Content>
-        </Header>
-
-        {!isSuccess ? (
-          isSuccess !== undefined ? (
-            <Message error compact>
-              {message}
-            </Message>
-          ) : (
-            <div />
-          )
-        ) : (
-          <Redirect to="dashboard" />
-        )}
-
-        <Form onSubmit={this.onHandleLogin} className="attached fluid segment">
-          <Form.Field>
-            <Label>Email</Label>
-            <Input type="email" name="email" />
-          </Form.Field>
-          <Form.Field>
-            <Label>Password</Label>
-            <Input type="password" name="password" />
-          </Form.Field>
-          <Form.Field>
-            <Button type="submit" color="blue">
-              Login
-            </Button>
-          </Form.Field>
-        </Form>
-        <Message attached="bottom" warning>
-          <Icon name="help" />
-          Don't have account? <Link to="register">Register here</Link>
-        </Message>
-      </Fragment>
-    );
   }
-}
+
+  return (
+    <Fragment>
+      <Header as="h3" icon textAlign="center">
+        <Icon name="user circle outline" circular />
+        <Header.Content>Login Page</Header.Content>
+      </Header>
+
+      {!isSuccess ? (
+        isSuccess !== undefined ? (
+          <Message error compact>
+            {message}
+          </Message>
+        ) : (
+          <div />
+        )
+      ) : (
+        <Redirect to="dashboard" />
+      )}
+
+      <Formik
+        initialValues={initialValues}
+        validationSchema={loginSchema}
+        onSubmit={onSubmit}
+      >
+        {({ errors, touched, handleChange, handleSubmit, isSubmitting }) => (
+          <Form onSubmit={handleSubmit}>
+            <Form.Field>
+              <Label>Email</Label>
+              <Input type="email" name="email" onChange={handleChange} />
+              {errors.email && touched.email ? (
+                <Message floating color="red" size="mini">
+                  {errors.email}
+                </Message>
+              ) : (
+                <div />
+              )}
+            </Form.Field>
+            <Form.Field>
+              <Label>Password</Label>
+              <Input type="password" name="password" onChange={handleChange} />
+              {errors.password && touched.password ? (
+                <Message floating color="red" size="mini">
+                  {errors.password}
+                </Message>
+              ) : (
+                <div />
+              )}
+            </Form.Field>
+            <Form.Field>
+              <Button type="submit" color="blue">
+                {!isSubmitting ? 'Login' : <Loader size="tiny" active inline />}
+              </Button>
+            </Form.Field>
+          </Form>
+        )}
+      </Formik>
+      <Message attached="bottom" warning>
+        <Icon name="help" />
+        Don't have account? <Link to="register">Register here</Link>
+      </Message>
+    </Fragment>
+  );
+};
 
 const mapStateToProps = response => {
   return {

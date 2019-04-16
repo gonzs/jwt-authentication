@@ -1,5 +1,5 @@
 export const dashboardService = request => {
-  const DASHBOARD_API_ENDPOINT = 'http://localhost:3000/api/v1/dashboard';
+  const DASHBOARD_API_ENDPOINT = 'http://localhost:5000/api/v1/dashboard';
 
   const parameters = {
     method: 'GET',

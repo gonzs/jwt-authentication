@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { getCookie } from '../utils/cookies';
 import { connect } from 'react-redux';
 import { getDashboardAction } from '../actions/dashboardActions';
-import { Message, Header } from 'semantic-ui-react';
+import { Dimmer, Loader, Image, Segment, Header } from 'semantic-ui-react';
 
 class DashboardPage extends Component {
   componentDidMount() {
@@ -21,18 +21,19 @@ class DashboardPage extends Component {
     }
     return (
       <Fragment>
-        {!isSuccess ? (
-          isSuccess !== undefined ? (
-            <Message warning compact>
-              Loading...
-            </Message>
-          ) : (
-            <div />
-          )
-        ) : (
+        {isSuccess ? (
           <Header as="h3" icon textAlign="center">
             <Header.Content>{message}</Header.Content>
           </Header>
+        ) : (
+          <Segment>
+            <Image src="https://react.semantic-ui.com/images/wireframe/paragraph.png" />
+            <Dimmer active inverted>
+              <Loader size="big" active inline="centered">
+                Loading
+              </Loader>
+            </Dimmer>
+          </Segment>
         )}
       </Fragment>
     );
