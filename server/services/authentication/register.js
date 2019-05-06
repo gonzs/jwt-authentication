@@ -8,7 +8,7 @@ const passwordPattern = cons.passwordPattern;
 
 // Register new users
 function registerUser(request, response) {
-  let { email, password } = request.body;
+  let { email, password, name } = request.body;
 
   // Validations
   if (!email || !password)
@@ -23,10 +23,14 @@ function registerUser(request, response) {
   if (!password.match(passwordPattern))
     return response.json(httpResponse.onPasswordRegExError);
 
+  if (name.length > 50 || password.length < 2)
+    return response.json(httpResponse.onNameLengthError);
+
   // Attempt to save the user
   let newUser = new User({
     email: email,
-    password: password
+    password: password,
+    name: name
   });
 
   newUser.save(error => {

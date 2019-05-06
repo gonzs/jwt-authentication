@@ -18,7 +18,8 @@ const UserSchema = new mongoose.Schema({
     default: "Client"
   },
   name: {
-    type: String
+    type: String,
+    required: true
   }
 });
 

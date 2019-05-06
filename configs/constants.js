@@ -40,6 +40,10 @@ const httpResponse = {
     message:
       "Password should constain at least one Uppercase char and one special symbol(.!#$%&'*+/=?^_`{|}~-)"
   },
+  onNameLengthError: {
+    success: false,
+    message: "Name should constain 2 to 50 characters"
+  },
   onUserSaveSuccess: {
     success: true,
     message: "Successfully created new user."
