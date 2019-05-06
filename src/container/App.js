@@ -5,6 +5,8 @@ import PrivateRoute from './privateRoute';
 import LoginPage from '../components/loginPage';
 import RegisterPage from '../components/registerPage';
 import DashboardPage from '../components/dashboardPage';
+import UsersPage from '../components/usersPage';
+import ContactPage from '../components/contactPage';
 
 class App extends Component {
   render() {
@@ -16,6 +18,8 @@ class App extends Component {
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <PrivateRoute path="/dashboard" component={DashboardPage} />
+            <PrivateRoute path="/users" component={UsersPage} />
+            <PrivateRoute path="/contact" component={ContactPage} />
           </Switch>
         </div>
       </BrowserRouter>

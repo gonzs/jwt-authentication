@@ -82,7 +82,12 @@ const LoginPage = ({ onLoginUser, login }) => {
           <Form onSubmit={handleSubmit}>
             <Form.Field>
               <Label>Email</Label>
-              <Input type="email" name="email" onChange={handleChange} />
+              <Input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                placeholder="gonzalosisnero@gmail.com"
+              />
               {errors.email && touched.email ? (
                 <Message floating color="red" size="mini">
                   {errors.email}
@@ -93,7 +98,12 @@ const LoginPage = ({ onLoginUser, login }) => {
             </Form.Field>
             <Form.Field>
               <Label>Password</Label>
-              <Input type="password" name="password" onChange={handleChange} />
+              <Input
+                type="password"
+                name="password"
+                onChange={handleChange}
+                placeholder="Gonza.1234"
+              />
               {errors.password && touched.password ? (
                 <Message floating color="red" size="mini">
                   {errors.password}
