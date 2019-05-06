@@ -1,6 +1,6 @@
 let JwtStrategy = require("passport-jwt").Strategy;
 let ExtractJwt = require("passport-jwt").ExtractJwt;
-let User = require("../server/models/User");
+let User = require("../app/models/User");
 let config = require("./db");
 
 function setPassortConfigs(passport) {
