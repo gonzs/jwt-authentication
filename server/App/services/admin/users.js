@@ -30,7 +30,10 @@ function deleteUser(request, response) {
     if (error) throw error;
     if (!userDeleted) return response.send(httpResponse.onUserNotFound);
 
-    response.send(httpResponse.onUserDeleteSuccess);
+    response.json({
+      success: true,
+      users: userDeleted
+    });
   });
 }
 
@@ -57,7 +60,10 @@ function updateNameOrPassword(request, response) {
       if (error) throw error;
       if (!userUpdated) return response.send(httpResponse.onUserNotFound);
 
-      response.send(httpResponse.onUserUdateSuccess);
+      response.json({
+        success: true,
+        users: userUpdated
+      });
     }
   );
 }

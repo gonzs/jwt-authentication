@@ -13,8 +13,8 @@ let router = express.Router();
 router.use("/register", registerController);
 router.use("/login", loginController);
 router.use("/dashboard", dashboardController);
+router.use("/users", deleteUserController);
+router.use("/users", updateUserController);
 router.use("/users", getUsersController);
-router.use("/user/", deleteUserController);
-router.use("/user/", updateUserController);
 
 module.exports = router;
