@@ -11,6 +11,12 @@ export default function(
       return { ...state, response };
     case types.GET_USERS_ERROR:
       return { ...state, response };
+    case types.DELETE_USERS_SUCCESS: {
+      console.log(response);
+      return state;
+    }
+    case types.DELETE_USERS_ERROR:
+      return state;
     default:
       return state;
   }

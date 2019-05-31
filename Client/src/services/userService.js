@@ -14,6 +14,27 @@ export const getUsersService = request => {
       return response.json();
     })
     .then(json => {
+      console.log('GET');
+      return json;
+    });
+};
+
+export const deleteUsersService = request => {
+  const DELETE_USERS_API_ENDPOINT = 'http://localhost:5000/api/v1/user/';
+
+  const parameters = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: request.payload.token,
+    },
+  };
+
+  return fetch(DELETE_USERS_API_ENDPOINT + request.payload.id, parameters)
+    .then(response => {
+      return response.json();
+    })
+    .then(json => {
       return json;
     });
 };

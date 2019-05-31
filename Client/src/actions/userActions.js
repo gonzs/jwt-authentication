@@ -6,3 +6,10 @@ export const getUsersAction = payload => {
     payload,
   };
 };
+
+export const deleteUsersAction = payload => {
+  return {
+    type: types.DELETE_USERS,
+    payload,
+  };
+};
