@@ -27,6 +27,7 @@ class DashboardPage extends Component {
             <Header as="h3" icon textAlign="center">
               <Header.Content>{message}</Header.Content>
             </Header>
+
             <MenuAdminPage />
           </div>
         ) : (

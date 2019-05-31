@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Header, List, Message } from 'semantic-ui-react';
+import { Header, Table, Message, Icon, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { getUsersAction } from '../actions/userActions';
+import { getUsersAction, deleteUsersAction } from '../actions/userActions';
 import { getCookie } from '../utils/cookies';
+import MenuAdminPage from './menuAdminPage';
+import { Link } from 'react-router-dom';
 
 class UsersPage extends Component {
   componentDidMount() {
@@ -13,7 +15,8 @@ class UsersPage extends Component {
 
   render() {
     let message, isSuccess, users;
-    const { user } = this.props;
+    const { user, onDeleteUsers } = this.props;
+    const cookie = getCookie('token');
 
     if (user.hasOwnProperty('response')) {
       if (user.response !== undefined) {
@@ -36,24 +39,43 @@ class UsersPage extends Component {
       )
     ) : (
       <div>
+        <MenuAdminPage />
+
         <Header as="h3" icon textAlign="center">
           <Header.Content>Users</Header.Content>
         </Header>
-        <List animated verticalAlign="middle">
-          {users.map((user, index) => {
-            return (
-              <List.Item key={index}>
-                {/* <Image
-                avatar
-                src="https://react.semantic-ui.com/images/avatar/small/helen.jpg"
-              /> */}
-                <List.Content>
-                  <List.Header>{user.name}</List.Header>
-                </List.Content>
-              </List.Item>
-            );
-          })}
-        </List>
+
+        <Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell width={4}>Name</Table.HeaderCell>
+              <Table.HeaderCell width={1}>Delete ?</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {users.map((user, index) => {
+              let url = 'users/' + (index + 1);
+              return (
+                <Table.Row key={index}>
+                  <Table.Cell>
+                    <Link to={url}>{user.name}</Link>
+                  </Table.Cell>
+
+                  <Table.Cell>
+                    <Button
+                      icon
+                      onClick={() =>
+                        onDeleteUsers({ token: cookie, id: user._id })
+                      }
+                    >
+                      <Icon name="trash alternate outline" />
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
+          </Table.Body>
+        </Table>
       </div>
     );
   }
@@ -68,6 +90,7 @@ const mapStateToProps = response => {
 const mapDispatchToProps = dispatch => {
   return {
     onGetUsers: data => dispatch(getUsersAction(data)),
+    onDeleteUsers: data => dispatch(deleteUsersAction(data)),
   };
 };
 
