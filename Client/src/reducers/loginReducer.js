@@ -5,7 +5,6 @@ export default function(
   action
 ) {
   const response = action.response;
-  console.log(action);
 
   switch (action.type) {
     case types.LOGIN_USER_SUCCESS:

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { getUsersAction, deleteUsersAction } from '../actions/userActions';
 import { getCookie } from '../utils/cookies';
 import MenuAdminPage from './menuAdminPage';
-import { Link } from 'react-router-dom';
 
 class UsersPage extends Component {
   componentDidMount() {
@@ -54,19 +53,16 @@ class UsersPage extends Component {
           </Table.Header>
           <Table.Body>
             {users.map((user, index) => {
-              let url = 'users/' + (index + 1);
               return (
                 <Table.Row key={index}>
-                  <Table.Cell>
-                    <Link to={url}>{user.name}</Link>
-                  </Table.Cell>
-
+                  <Table.Cell>{user.name}</Table.Cell>
                   <Table.Cell>
                     <Button
                       icon
-                      onClick={() =>
-                        onDeleteUsers({ token: cookie, id: user._id })
-                      }
+                      onClick={() => {
+                        onDeleteUsers({ token: cookie, id: user._id });
+                        alert('User was deleted');
+                      }}
                     >
                       <Icon name="trash alternate outline" />
                     </Button>

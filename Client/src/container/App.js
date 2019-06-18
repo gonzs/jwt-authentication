@@ -7,7 +7,6 @@ import RegisterPage from '../components/registerPage';
 import DashboardPage from '../components/dashboardPage';
 import UsersPage from '../components/usersPage';
 import ContactPage from '../components/contactPage';
-import UserPage from '../components/userPage';
 
 class App extends Component {
   render() {
@@ -19,7 +18,6 @@ class App extends Component {
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <PrivateRoute path="/dashboard" component={DashboardPage} />
-            <PrivateRoute path="/users/:id" component={UserPage} />
             <PrivateRoute path="/users" component={UsersPage} />
             <PrivateRoute path="/contact" component={ContactPage} />
           </Switch>

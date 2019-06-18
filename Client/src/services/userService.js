@@ -14,13 +14,12 @@ export const getUsersService = request => {
       return response.json();
     })
     .then(json => {
-      console.log('GET');
       return json;
     });
 };
 
 export const deleteUsersService = request => {
-  const DELETE_USERS_API_ENDPOINT = 'http://localhost:5000/api/v1/user/';
+  const DELETE_USERS_API_ENDPOINT = 'http://localhost:5000/api/v1/users/';
 
   const parameters = {
     method: 'DELETE',
